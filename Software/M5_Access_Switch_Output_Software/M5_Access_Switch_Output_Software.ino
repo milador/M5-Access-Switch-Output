@@ -2,7 +2,7 @@
  * File Name: M5_Access_Switch_Output_Software.ino 
  * Title: M5 Switch Output Interface Software
  * Developed by: Milador
- * Version Number: 1.0 (24/6/2022)
+ * Version Number: 1.0 (24/9/2022)
  * Github Link: https://github.com/milador/M5-Access-Switch-Input
  ***************************************************************************/
 
@@ -11,8 +11,12 @@
 #include <WiFiAP.h>
 #include <M5StickC.h>
 
-#define SWITCH_A_PIN 26
-#define SWITCH_B_PIN 25
+#define SWITCH_A_PIN         26
+#define SWITCH_B_PIN         25
+#define TO_SLEEP_TIME        60        //Go to sleep if no data was sent in 60 seconds
+#define TO_WAKE_TIME         120       //Wake up every 2 minutes 
+#define S_TO_MS_FACTOR       1000
+#define US_TO_S_FACTOR       1000000
 
 // Set these to your desired credentials.
 const char *ssid = "M5SwitchOutput";
@@ -20,6 +24,7 @@ const char *password = "123456";
 
 String g_switchMessage;        //Custom message 
 int g_pageNumber;
+unsigned long currentTime = 0, switchDataTime = 0;
 
 
 WiFiServer server(80);
@@ -45,14 +50,17 @@ void setup() {
   showIntro();                                                                 //Show intro page
   delay(5);   
   showMode(myIP);
-  delay(5);
+  delay(5000);
+  initBatterySaver();
 }
 
 void loop() {
+
+  batterySaver();
   WiFiClient client = server.available();   // listen for incoming clients
 
   if (client) {                             // if you get a client,
-    Serial.println("New Client.");           // print a message out the serial port
+    Serial.println("New Client.");          // print a message out the serial port
     String currentLine = "";                // make a String to hold incoming data from the client
     while (client.connected()) {            // loop while the client's connected
       if (client.available()) {             // if there's bytes to read from the client,
@@ -99,11 +107,27 @@ void loop() {
           delay(100);
           digitalWrite(SWITCH_B_PIN, LOW);
         }
+        switchDataTime = millis();  
       }
     }
     // close the connection:
     client.stop();
     Serial.println("Client Disconnected.");
+  }
+}
+
+//***INITIALIZE BATTERY SAVER FUNCTION***//
+void initBatterySaver() {
+  esp_sleep_enable_ext0_wakeup(GPIO_NUM_37,LOW);
+  esp_sleep_enable_ext0_wakeup(GPIO_NUM_39,LOW);
+  currentTime = switchDataTime = millis();
+}
+
+//***BATTERY SAVER FUNCTION***//
+void batterySaver() {
+  currentTime = millis();
+  if (currentTime > (switchDataTime + (TO_SLEEP_TIME * S_TO_MS_FACTOR))) {
+    M5.Axp.DeepSleep(SLEEP_SEC(TO_WAKE_TIME));
   }
 }
 
@@ -140,16 +164,22 @@ void showMode(IPAddress ip){
 
   g_pageNumber = 1;
 
-
   M5.Lcd.setRotation(3);
   M5.Lcd.fillScreen(BLACK);                      //Black background
   M5.Lcd.drawRect(1, 1, 159, 20, BLUE);
   M5.Lcd.setTextColor(WHITE);
   M5.Lcd.setTextSize(1);
-  M5.Lcd.drawCentreString(String(ip),80,2,2);
+  M5.Lcd.drawCentreString(ipToString(ip),80,2,2);
   
   showModeInfo();
   showMessage();
+}
+
+String ipToString(IPAddress ip){
+  String s="";
+  for (int i=0; i<4; i++)
+    s += i  ? "." + String(ip[i]) : String(ip[i]);
+  return s;
 }
 
 //*** SHOW MODE INFO***//
