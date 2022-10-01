@@ -3,7 +3,7 @@
  * Title: M5 Switch Output Interface Software
  * Developed by: Milador
  * Version Number: 1.0 (24/9/2022)
- * Github Link: https://github.com/milador/M5-Access-Switch-Input
+ * Github Link: https://github.com/milador/M5-Access-Switch-Output
  ***************************************************************************/
 
 #include <WiFi.h>
@@ -14,7 +14,7 @@
 #define SWITCH_A_PIN         26
 #define SWITCH_B_PIN         25
 #define TO_SLEEP_TIME        60        //Go to sleep if no data was sent in 60 seconds
-#define TO_WAKE_TIME         120       //Wake up every 2 minutes 
+#define TO_WAKE_TIME         180       //Wake up every 3 minutes 
 #define S_TO_MS_FACTOR       1000
 #define US_TO_S_FACTOR       1000000
 
