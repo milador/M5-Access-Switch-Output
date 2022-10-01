@@ -9,9 +9,9 @@ A Wi-Fi enabled Adaptive Switch Output device based on ESP32 M5StickC/M5StickCPl
 ## Requirements and setup instructions 
 The setup process is divided to three main catagories:
 
-  1. [Hardware](./Hardware/) : The required hardware and assembly steps
-  2. [Software](./Software/) : The required software and the process to upload the latest code
-  3. [Documentation](./Documentation/) : The user guide and the documents to assist the end user
+  1. [Hardware](./Hardware/) : The required hardware and design files
+  2. [Software](./Software/) : The required software
+  3. [Documentation](./Documentation/) : The assembly guide,user guide and other documents 
 
 
 ## License
