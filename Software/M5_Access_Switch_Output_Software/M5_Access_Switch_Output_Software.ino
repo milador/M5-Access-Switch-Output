@@ -9,7 +9,7 @@
 #include <WiFi.h>
 #include <WiFiClient.h>
 #include <WiFiAP.h>
-#include <M5StickCPlus.h>
+#include <M5StickC.h>
 
 #define SWITCH_A_PIN         26
 #define SWITCH_B_PIN         25
@@ -151,10 +151,10 @@ void showIntro() {
   M5.Lcd.setTextColor(WHITE);
 
   M5.Lcd.setTextSize(2);                        
-  M5.Lcd.drawCentreString("Milador.ca",130,40,2);
+  M5.Lcd.drawCentreString("Milador.ca",80,20,2);
 
   M5.Lcd.setTextSize(1);
-  M5.Lcd.drawCentreString("M5Stick Switch Output",130,80,1);
+  M5.Lcd.drawCentreString("M5Stick Switch Output",80,50,1);
 
   delay(3000);
 }
@@ -166,10 +166,10 @@ void showMode(IPAddress ip){
 
   M5.Lcd.setRotation(3);
   M5.Lcd.fillScreen(BLACK);                      //Black background
-  M5.Lcd.drawRect(2, 2, 238, 30, BLUE);
+  M5.Lcd.drawRect(1, 1, 159, 20, BLUE);
   M5.Lcd.setTextColor(WHITE);
   M5.Lcd.setTextSize(1);
-  M5.Lcd.drawCentreString(ipToString(ip),120,5,4);
+  M5.Lcd.drawCentreString(ipToString(ip),80,2,2);
   
   showModeInfo();
   showMessage();
@@ -188,12 +188,12 @@ void showModeInfo() {
   String switchAText = "Swich A";
   String switchBText = "Swich B";
   M5.Lcd.setRotation(3);
-  M5.Lcd.drawRect(2, 35, 238, 62, WHITE);
+  M5.Lcd.drawRect(1, 23, 159, 41, WHITE);
   M5.Lcd.setTextColor(WHITE); 
   M5.Lcd.setTextSize(1);
 
-  M5.Lcd.drawCentreString(switchAText,120,44,2);
-  M5.Lcd.drawCentreString(switchBText,120,67,2);
+  M5.Lcd.drawCentreString(switchAText,80,28,2);
+  M5.Lcd.drawCentreString(switchBText,80,43,2);
 }
 
 //*** SHOW CUSTOM MESSAGE***//
@@ -202,10 +202,10 @@ void showMessage() {
   M5.Lcd.setRotation(3);
   M5.Lcd.setTextSize(1);                    // Select the font
   //Display connection status based on code
-  M5.Lcd.drawRect(2, 100, 238, 30, BLUE);
+  M5.Lcd.drawRect(1, 65, 159, 15, BLUE);
   M5.Lcd.setTextColor(BLUE); 
   g_switchMessage = "Switch Output";
   Serial.println(g_switchMessage);
-  M5.Lcd.drawCentreString(g_switchMessage,120,105,2);// Display message
+  M5.Lcd.drawCentreString(g_switchMessage,80,69,1);// Display message
     
 }
