@@ -17,10 +17,11 @@
 #define TO_WAKE_TIME         180       //Wake up every 3 minutes 
 #define S_TO_MS_FACTOR       1000
 #define US_TO_S_FACTOR       1000000
+#define SLEEP_MODE_ENABLED   true      //Set to false to disable sleep mode
 
 // Set these to your desired credentials.
 const char *ssid = "M5SwitchOutput";
-const char *password = "123456";
+const char *password = "12345678";
 
 String g_switchMessage;        //Custom message 
 int g_pageNumber;
@@ -56,7 +57,7 @@ void setup() {
 
 void loop() {
 
-  batterySaver();
+  if(SLEEP_MODE_ENABLED) { batterySaver(); } // Sleep mode          
   WiFiClient client = server.available();   // listen for incoming clients
 
   if (client) {                             // if you get a client,
@@ -115,6 +116,7 @@ void loop() {
     Serial.println("Client Disconnected.");
   }
 }
+
 
 //***INITIALIZE BATTERY SAVER FUNCTION***//
 void initBatterySaver() {
