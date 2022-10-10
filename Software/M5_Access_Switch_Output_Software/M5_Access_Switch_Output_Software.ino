@@ -20,7 +20,7 @@
 
 // Set these to your desired credentials.
 const char *ssid = "M5SwitchOutput";
-const char *password = "123456";
+const char *password = "12345678";
 
 String g_switchMessage;        //Custom message 
 int g_pageNumber;
